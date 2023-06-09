@@ -34,7 +34,7 @@ class Dashboard extends React.Component{
             .then((response) => {
                 const data = response.data;
                 this.setState({posts: data})
-                console.log("Data retrieved!");
+                //console.log("Data retrieved!");
             })
             .catch((e) => {
               console.log("Error!", e)
@@ -131,7 +131,7 @@ class Dashboard extends React.Component{
                         <h3 className='textFont'>Welcome Back</h3>
                         <hr></hr>
                         <p className='textFont'>{name}</p>
-                        <p className='textFont'>usrnm: {username}</p>
+                        <p className='textFont'>username: {username}</p>
                         <p className='textFont'>email: {email}</p>
                         <p className='textFont'>Role: <code>{role}</code></p>
                         <a href='/quiz-creator' className='btn btn-outline-light w-100'>Create A Quiz</a>
@@ -164,7 +164,7 @@ class Dashboard extends React.Component{
                         <h3 className='textFont'>Welcome Back</h3>
                         <hr></hr>
                         <p className='textFont'>{name}</p>
-                        <p className='textFont'>usrnm: {username}</p>
+                        <p className='textFont'>username: {username}</p>
                         <p className='textFont'>email: {email}</p>
                     </div>
                     <div className='w-100 m-2 p-2 bg-dark-transparent'>

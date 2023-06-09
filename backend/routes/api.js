@@ -61,21 +61,22 @@ router.get('/quiz/selection', (req, res) => {
         })
 });
 
-router.get(`/quiz/exam`, (req, res) => {
+router.get(`/quiz/exam/:quizID`, (req, res) => {
     const quizID = req.params.quizID;
-    console.log("QuizID: ", quizID)
-    Quiz.find({_id : '638eeea33b0915a34e2a4bf4'})
-        .then((data) => {
-            res.status(200).json(data);
-            console.log("Data: ", data);
-        })
-        .catch((error)=>{
-            res.status(500).json({
-                error: 'Internal Server Error!'
-            })
-            console.log("[Console]: ", error)
-        })
-});
+    console.log("QuizID:", quizID);
+  
+    Quiz.findById(quizID)
+      .then((data) => {
+        res.status(200).json(data);
+        //console.log("Data:", data);
+      })
+      .catch((error) => {
+        res.status(500).json({
+          error: 'Internal Server Error!'
+        });
+        console.log("[Console]:", error);
+      });
+  });
 
 router.get('/quiz/responses', (req, res) => {
     Response.find({})

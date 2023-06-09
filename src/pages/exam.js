@@ -16,117 +16,57 @@ class Exam extends React.Component{
 
     // Calls whenever the React Component mounts.
     componentDidMount = () => {
-        this.state.quizID = localStorage.getItem('quizID')
-        this.getQuiz();
+        const quizID = localStorage.getItem('quizID');
+        this.setState({ quizID });
+        this.getQuiz(quizID);
       }
 
-
     // Get a quiz
-    getQuiz = (id) => {
-        axios.get('http://localhost:8080/api/quiz/exam', {params:{quizID: id}})
-            .then((response) => {
-                const data = response.data;
-                this.setState({posts: data})
-                console.log("Data retrieved!", data);
-            })
-            .catch((e) => {
-                console.log("Error!", e)
-            })
+    getQuiz = (quizID) => {
+      axios.get(`http://localhost:8080/api/quiz/exam/${quizID}`)
+        .then((response) => {
+          const data = response.data;
+          console.log(data); // Check the received data in the console
+          this.setState({ posts: data }, () => {
+            console.log("State updated:", this.state.posts); // Check the updated state in the console
+          });
+          console.log("Data retrieved!", data);
+        })
+        .catch((error) => {
+          console.log("Error!", error);
+        });
     }
-
-
     // Returns a map of posts.
-    displayQuiz = (posts) => {
-        const map = posts.map((post, index) => (
-            <div id={index} key={index}>
+    displayQuiz = (quizzes) => {
+        console.log("Displaying quizzes:", quizzes);
+        if (!Array.isArray(quizzes)) {
+          return null; // Return early if quizzes is not an array
+        }
+        
+        return quizzes.map((quiz, index) => (
+          <div id={index} key={index}>
             <form>
-                <h1 id={post.title}>{post.title}</h1>
-                <p id={post.creator}>By {post.creator}</p>
-                <p>#{index+1}: {post.questions.q1.question}</p>
-                <div className="radio">
-                    <label>
-                        <input type="radio" value="option1" checked={true} />
-                        {post.questions.q1.options.a1}
-                    </label>
+              <h1 id={quiz.title}>{quiz.title}</h1>
+              <p id={quiz.creator}>By {quiz.creator}</p>
+              {quiz.questions.map((question, questionIndex) => (
+                <div key={questionIndex}>
+                  <p>#{questionIndex + 1}: {question.question}</p>
+                  {question.options.map((option, optionIndex) => (
+                    <div className="radio" key={optionIndex}>
+                      <label>
+                        <input type="radio" name={`q${index + 1}`} value={`option${optionIndex + 1}`} />
+                        {option}
+                      </label>
                     </div>
-                    <div className="radio">
-                    <label>
-                        <input type="radio" value="option2" />
-                        {post.questions.q1.options.a2}
-                    </label>
-                    </div>
-                    <div className="radio">
-                    <label>
-                        <input type="radio" value="option3" />
-                        {post.questions.q1.options.a3}
-                    </label>
-                    </div>
-                    <div className="radio">
-                    <label>
-                        <input type="radio" value="option3" />
-                        {post.questions.q1.options.a4}
-                    </label>
+                  ))}
+                  <br></br>
                 </div>
-                <br></br>
-                <p>#{index+2}: {post.questions.q2.question}</p>
-                <div className="radio">
-                    <label>
-                        <input type="radio" value="option1" checked={true} />
-                        {post.questions.q2.options.a1}
-                    </label>
-                    </div>
-                    <div className="radio">
-                    <label>
-                        <input type="radio" value="option2" />
-                        {post.questions.q2.options.a2}
-                    </label>
-                    </div>
-                    <div className="radio">
-                    <label>
-                        <input type="radio" value="option3" />
-                        {post.questions.q2.options.a3}
-                    </label>
-                    </div>
-                    <div className="radio">
-                    <label>
-                        <input type="radio" value="option3" />
-                        {post.questions.q2.options.a4}
-                    </label>
-                </div>
-                <br></br>
-                <p>#{index+3}: {post.questions.q3.question}</p>
-                <div className="radio">
-                    <label>
-                        <input type="radio" value="option1" checked={true} />
-                        {post.questions.q3.options.a1}
-                    </label>
-                    </div>
-                    <div className="radio">
-                    <label>
-                        <input type="radio" value="option2" />
-                        {post.questions.q3.options.a2}
-                    </label>
-                    </div>
-                    <div className="radio">
-                    <label>
-                        <input type="radio" value="option3" />
-                        {post.questions.q3.options.a3}
-                    </label>
-                    </div>
-                    <div className="radio">
-                    <label>
-                        <input type="radio" value="option3" />
-                        {post.questions.q3.options.a4}
-                    </label>
-                </div>
-                <br></br>
-                <button type='button' className='btn btn-outline-light'>Submit</button>
+              ))}
+              <button type="button" className="btn btn-outline-light">Submit</button>
             </form>
-            </div> 
+          </div>
         ));
-
-        return map ;
-    }
+      }
     
     // Updates the state of the target.
     handleEventUpdate = (event) => {
@@ -141,13 +81,16 @@ class Exam extends React.Component{
 
 
     // Renders quiz
-    render(){
-        return(
+    render() {
+        return (
+          <div>
             <div className='text-center text-white container'>
-                {this.displayQuiz(this.state.posts)}
+                
+              {this.displayQuiz(this.state.posts)}
             </div>
+          </div>
         );
-    }
+      }
 }
 
 export default Exam;

@@ -5,9 +5,10 @@
  */
 
 
-import React, { useState } from 'react';
+import React from 'react';
 import axios from 'axios';
 import "./css/error.css"
+import { API_BASE_URL } from '../config';
 
 class Login extends React.Component{
 
@@ -62,7 +63,7 @@ class Login extends React.Component{
     };
 
     axios({
-      url: 'http://localhost:8080/api/login',
+      url: `${API_BASE_URL}/login`,
       method: 'POST',
       data: payload
     })

@@ -13,8 +13,8 @@ import Nav from './Nav';
 import reportWebVitals from './reportWebVitals';
 
 /* CSS IMPORTS */
-import './Nav.css';
-import './index.css';
+import './css/Nav.css';
+import './css/index.css';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 

@@ -1,0 +1,96 @@
+/* Nav.css
+ * This file is responsible specifically for styling the navbar
+ * 
+ * Daniel
+ */
+
+.App {
+  text-align: center;
+}
+
+.App-logo {
+  height: 40vmin;
+  pointer-events: none;
+}
+
+.textFont {
+  font-family: "Typograph-PRO-Semi-Bold", sans-serif;
+}
+
+li {
+  float: left;
+  color: white;
+}
+
+li a {
+  width: 100px;
+  display: block;
+  padding: 20px 15px;
+  text-decoration: none;
+  color: white;
+  text-align: center;
+}
+
+li a:hover {
+  color: #c04848
+}
+
+.nav-header {
+  background-color: white;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.App-link {
+  color: #61dafb;
+}
+
+.body{
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  font-family: "Typograph-PRO-Semi-Bold", sans-serif;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+@font-face {
+  font-family: "Typograph-PRO-Semi-Bold";
+  src: url('../fonts/typograph_pro_semi_bold-webfont.woff2') format('woff2'), url('../fonts/typograph_pro_semi_bold-webfont.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+
+.button-container{
+  text-align: center;
+  justify-content: center;
+  display: flex;
+  flex-direction:row;
+  font-family: "Typograph-PRO-Semi-Bold", sans-serif;
+}
+
+.btn{
+  margin: 2px;
+  font-family: "Typograph-PRO-Semi-Bold", sans-serif;
+}
+
+.navBtn {
+  color: white;
+  background-color: rgba(0, 0, 0, 0.1);
+  box-sizing: border-box;
+  text-decoration: none;
+  font-family: "Typograph-PRO-Semi-Bold", sans-serif;
+  font-weight: 300;
+  transition: all 0.2s;
+}
+
+.navBtn:hover {
+  color: #c04848
+}

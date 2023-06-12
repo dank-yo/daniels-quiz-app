@@ -7,13 +7,12 @@
 
 import React from "react";
 import "./css/quiz-create.css";
-import logo from '../img/logo.svg';
 import axios from 'axios';
 
 let questionCount = 2 // used to keep track of the question number
 async function newQuestion(){ // all code for the create new questions section
     console.log(`testing new button ${questionCount}`)
-    const questionSection = `<label class="questions">Question ${questionCount} 
+    const questionSection = `<label className="questions">Question ${questionCount} 
                         <input
                         type="text"
                         placeholder="Question"
@@ -122,7 +121,7 @@ class Creator extends React.Component{
                 </div>
                 <div className="w-100"
                 id="questions-section">
-                    <label class="questions">Question 1
+                    <label className="questions">Question 1
                         <input
                         type="text"
                         placeholder="Question"

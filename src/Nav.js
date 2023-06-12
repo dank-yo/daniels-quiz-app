@@ -22,6 +22,7 @@ import Dashboard from "./pages/dashboard";
 import Creator from "./pages/quiz_creator";
 import Exam from "./pages/exam";
 import Analytics from './pages/analytics';
+import Result from './pages/result';
 
 // Directs movement between pages
 function main(){
@@ -38,6 +39,7 @@ function main(){
           <Route path="quiz-creator" element={<Creator />} />
           <Route path="exam" element={<Exam />} />
           <Route path="analytics" element={<Analytics />} />
+          <Route path="result" element={<Result />} />
           </Route>
         </Routes>
       </BrowserRouter>

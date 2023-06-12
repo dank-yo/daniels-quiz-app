@@ -18,7 +18,7 @@ const store = new session.MemoryStore();
 const mongoose = require('mongoose');
 const User = require("../schema/User");
 const Quiz = require("../schema/Quiz");
-const Response = require("../schema/Response");
+const Submission = require("../schema/Submission");
 
 //SALT & HASH Plugin
 const bcrypt = require('bcryptjs');
@@ -38,17 +38,6 @@ app.use((req, res, next) => {
     next();
 })
 
-router.get('/quiz/analytics', (req, res) => {
-    Response.find({})
-        .then((data) => {
-            //console.log("Data: ", data);
-            res.json(data);
-        })
-        .catch((error)=>{
-            console.log("[Console]: ", error)
-        })
-});
-
 //Routes
 router.get('/quiz/selection', (req, res) => {
     Quiz.find({})
@@ -61,25 +50,27 @@ router.get('/quiz/selection', (req, res) => {
         })
 });
 
-router.get(`/quiz/exam/:quizID`, (req, res) => {
-    const quizID = req.params.quizID;
-    console.log("QuizID:", quizID);
-  
+router.get('/quiz/exam', (req, res) => {
+    const quizID = req.query.id;
     Quiz.findById(quizID)
-      .then((data) => {
-        res.status(200).json(data);
-        //console.log("Data:", data);
-      })
-      .catch((error) => {
-        res.status(500).json({
-          error: 'Internal Server Error!'
+        .then((data) => {
+        if (data) {
+            res.status(200).json(data);
+        } else {
+            res.status(404).json({ error: 'Project not found' });
+        }
+        })
+        .catch((error) => {
+        res.status(500).json({ error: 'Internal Server Error!' });
+        console.log('[Router]: ', error);
         });
-        console.log("[Console]:", error);
-      });
-  });
+    });
 
-router.get('/quiz/responses', (req, res) => {
-    Response.find({})
+  /* This is the route to get the submissions */ 
+  
+router.get('/quiz/result', (req, res) => {
+    const responseID = req.query.id;
+    Submission.findById(responseID)
         .then((data) => {
             //console.log("Data: ", data);
             res.json(data);
@@ -89,9 +80,7 @@ router.get('/quiz/responses', (req, res) => {
         })
 });
 
-
-
-router.post('/login', (req, res) => {
+router.post('/quiz/login', (req, res) => {
     //Prints out the incoming information
     console.log(`Session: ${req.sessionID}`);
     console.log('[Console]: Body-', req.body);
@@ -125,7 +114,7 @@ router.post('/login', (req, res) => {
 });
 
 
-router.post('/register', (req, res) => {
+router.post('/quiz/register', (req, res) => {
     console.log('[Console]: Body-', req.body);
     data = req.body;
 
@@ -164,26 +153,27 @@ router.post('/register', (req, res) => {
 });
 
 //Route for uploading the quiz from the quiz-creator page
-router.post('/quiz-upload', (req, res) => {
+router.post('/quiz/exam/submit', (req, res) => {
     console.log('[Console]: Body-', req.body);
-    //data = req.body;
-    data = {
-        
-    }
+    data = req.body;
 
-    const quiz = new Quiz(data);
+    const submission = new Submission(data);
 
-    userVariable.save((error) => {
+    submission.save((error) => {
         if (error){
             res.json({
                 msg: "[Console]: Error handling. Please try again later."
             });
             console.log("[Console]: Error! ", err);
         }else{
+            console.log("[Console]: Quiz results successfully uploaded to database!");
+            const objectId = submission._id;
+            const redirectUrl = `/result?id=${objectId}`;
+
             res.json({
-                msg: "[Console]: Registration information recieved!"
+                msg: "[Console]: Registration information received!",
+                redirectUrl: redirectUrl
             });
-            console.log("[Console]: User Successfully uploaded to database!");
         }
     });
 });

@@ -73,6 +73,7 @@ class Exam extends React.Component{
         correct: totalCorrectAnswers,
         incorrect: totalIncorrectAnswers,
         percentage: calcPercentage,
+        date : Date('<YYYY-mm-ddTHH:MM:ss>')
       }
 
       axios({
@@ -113,12 +114,13 @@ class Exam extends React.Component{
           <div id={index} key={index}>
               <h1 id='title'>{quiz.title}</h1>
               <p id='creator'>By {quiz.creator}</p>
+              <div className='container w-100 m-0 p-0' style={{textAlign: 'left', maxHeight: '60vh', overflow: 'auto' }}>
               {quiz.questions.map((question, questionIndex) => (
-                <div key={questionIndex} id={'q'+(questionIndex+1)}>
+                <div key={questionIndex} id={'q'+(questionIndex+1)} className='w-50 mx-auto bg-dark-transparent m-2 p-2 rounded'>
                   <p>#{questionIndex + 1}: {question.question}</p>
                   {question.options.map((option, optionIndex) => (
                     <div className="radio" key={optionIndex}>
-                      <label>
+                      <label> 
                       <input
                         type="radio"
                         name={`q${questionIndex + 1}`}
@@ -126,14 +128,15 @@ class Exam extends React.Component{
                         value={`option${optionIndex + 1}`}
                         checked={this.state.selectedOptions[questionIndex] === optionIndex}
                         onChange={() => handleOptionChange(questionIndex, optionIndex)}
-                      />
-                  {option}
+                      /> {option}
                       </label>
                     </div>
                   ))}
                   <br></br>
                 </div>
               ))}
+              </div>
+              <br></br>
               <button type="button" className="btn btn-outline-light" onClick={this.submitQuiz}>Submit</button>
           </div>
         ));

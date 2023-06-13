@@ -29,6 +29,19 @@ class Dashboard extends React.Component{
       window.open(`exam?id=${quizID}`, "_self");
     };
 
+    formatDate = (dateString) => {
+      const date = new Date(dateString);
+      const options = {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+        hour: 'numeric',
+        minute: 'numeric',
+        second: 'numeric',
+      };
+      return date.toLocaleDateString('en-US', options);
+    };
+
     // Returns available quizzes.
     getQuizListings = () => {
       axios.get(`${API_BASE_URL}/selection`)
@@ -43,38 +56,33 @@ class Dashboard extends React.Component{
     }
 
     displayQuizListings = (posts, role) => {
-        // Do nothing if there are no quizzes
-        if (!posts.length){return null;}
-        // If the role is admin
-        if(role==='admin'){
-          // Returns uploaded quizzes
-            return posts.map((post, index) => (
-                <div id={index} key ={index}>
-                    <div className='align-center text-left'>
-                        <div className='flex-column'><h3 className='align-center'>{post.title}</h3>
-                            <p></p></div>
-                      <p className='align-center'>Uploaded: {post.date} by {post.creator}</p>
-                      <button id={post._id} type="button" className="btn btn-outline-light" onClick={() => this.quizIDRedirect(post._id)}>Load</button>
-                      <br></br><br></br>
-                    </div>
-                </div>
-              ));
-        }
-        // Not admin
-        else {
-          // Returns quizzes with info
-          return posts.map((post, index) => (
-            <div id={index} key ={index}>
-                <div className='align-center text-left'>
-                    <div className='flex-column'><h3 className='align-center'>{post.title}</h3>
-                        <p></p></div>
-                  <p className='align-center'>Uploaded: {post.date} by {post.creator}</p>
-                  <button type="button" className="btn btn-outline-light" onClick={() => this.quizIDRedirect(post._id)}>Load</button>
-                  <br></br><br></br>
-                </div>
+      // Do nothing if there are no quizzes
+      if (!posts.length) {
+        return null;
+      }
+    
+      // Returns the appropriate quiz listings based on the role
+      return posts.map((post, index) => (
+        <div id={index} key={index}>
+          <div className="align-center text-left">
+            <div className="flex-column">
+              <h3 className="align-center">{post.title}</h3>
+              <p></p>
             </div>
-          ));
-        }
+            <p className="align-center">Uploaded: {post.date} by {post.creator}</p>
+            <button
+              id={post._id}
+              type="button"
+              className="btn btn-outline-light"
+              onClick={() => this.quizIDRedirect(post._id)}
+            >
+              Load
+            </button>
+            <br></br>
+            <br></br>
+          </div>
+        </div>
+      ));
     };
 
   render(){
@@ -114,7 +122,7 @@ class Dashboard extends React.Component{
         <h1 className='textFont'>Dashboard</h1>
         <br /><br />
         <div className='row dashboard-row'>
-          <div className=' col-sm-3 m-2 p-2 bg-dark-transparent'>
+          <div className=' col-sm-3 m-2 p-2 bg-dark-transparent rounded'>
             <h4 className='textFont'>Welcome Back</h4>
             <hr />
             <div className='overflow-fix'>
@@ -130,7 +138,7 @@ class Dashboard extends React.Component{
           </>
           )}
           </div>
-        <div className='col-sm-7 m-2 p-2 bg-dark-transparent'>
+        <div className='col-sm-7 m-2 p-2 bg-dark-transparent rounded'>
           <h2>All Quizzes</h2>
           <hr />
           <div className='quizzes'>

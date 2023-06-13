@@ -9,6 +9,7 @@
     "axios": "^1.2.0",
     "bcryptjs-react": "^2.4.6",
     "bootstrap": "^5.2.3",
+    "concurrently": "^8.2.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-gauge-chart": "^0.4.1",
@@ -16,10 +17,12 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "start": "PORT=3001 react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "server": "cd ./backend && npx nodemon index.js",
+    "all": "concurrently -n \"server,client\" -c \"yellow,green\" \"npm run server\" \"npm start\""
   },
   "eslintConfig": {
     "extends": [

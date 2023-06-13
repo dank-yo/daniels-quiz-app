@@ -5,22 +5,24 @@
  * Daniel
  */
 
+const config = require('./config');
+
 const express = require('express');             // Back end web app framework
 
 const morgan = require('morgan');               // HTTP requests nad errors logger
 const mongoose = require("mongoose");           // Object Date Model for MongoDB
 const cors = require('cors');                   // Prevent CORS errors when running server and client on different addresses
 const path = require('path');                   // API router
+const routes = require('./routes/api.js');
 
 const app = express();
-const PORT = process.env.PORT || 8080;
-const MONGODB_URL = "mongodb://127.0.0.1:27017/quiz";
+const PORT = process.env.PORT || config.backend.port;
 
-const routes = require('./routes/api.js');
+const MONGODB_URL = config.database.url + ":" + config.database.port + "/" + config.database.dbname;
 
 //[Mongoose]: 
 mongoose.connect(MONGODB_URL, () => {
-        console.log("[Console]: Mongoose connected to MongoDB")
+        console.log("[Console]: Mongoose connected to MongoDB ", MONGODB_URL)
     },
     e => console.error(e)
 );

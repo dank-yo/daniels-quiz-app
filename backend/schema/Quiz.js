@@ -22,4 +22,4 @@ var quizSchema = new mongoose.Schema({
 });
 
 
-module.exports = mongoose.model('quizs', quizSchema);
+module.exports = mongoose.model('quizzes', quizSchema);

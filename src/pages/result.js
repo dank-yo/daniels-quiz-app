@@ -29,6 +29,20 @@ class Results extends React.Component{
         this.getQuizResult(resultID);
     }
 
+    formatDate = (dateString) => {
+      const date = new Date(dateString);
+      const options = {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+        hour: 'numeric',
+        minute: 'numeric',
+        second: 'numeric',
+      };
+      return date.toLocaleDateString('en-US', options);
+    };
+
+
     getQuizResult = (resultID) => {
       axios.get(`${API_BASE_URL}/result?id=${resultID}`)
         .then((res) => {
@@ -64,15 +78,18 @@ class Results extends React.Component{
           <h1>{q.title}</h1>
         </div>
       ));
+
+      const redirectToDashboard = () => {
+        window.location.href = '/dashboard';
+      };
   
       const results = result.map((r, index) => (
         <div key={index}>
-          <h1>{r.username}</h1>
+          <p>Date Submitted: {this.formatDate(r.date)}</p>
           <div className="d-flex justify-content-center m-2 p-2">
-            <div style={{width: '40%' }}>
               <GaugeChart
                 id="gauge-chart"
-                width={'50%'}
+                width={'100%'}
                 animate={false}
                 arcPadding={0}
                 cornerRadius={0}
@@ -83,14 +100,13 @@ class Results extends React.Component{
                 percent={r.percentage} // Assuming the result object has a 'score' property with the percentage value
               />
               </div>
-            </div>
             <p>Total Correct: {r.correct} | Total Incorrect: {r.incorrect}</p>
+            <button className='btn btn-outline-light' onClick={redirectToDashboard}>↺ Return to Dashboard</button>
         </div>
       ));
   
       return (
         <div>
-          <h4>for</h4>
           {quizTaken}
           {results}
         </div>
@@ -102,12 +118,16 @@ class Results extends React.Component{
 
       return (
         <div className='text-center text-white container'>
-          <h1>Your Result</h1>
+          <h1>Your Results</h1>
+          <h4>for</h4>
+          <br></br>
           {error ? (
             <div>{error}</div>
           ) : (
-            <div className='text-center text-white'>
-              {this.displayQuizResult(quiz, results)}
+            <div className='w-100 container d-flex'>
+              <div className='text-center text-white bg-dark-transparent m-2 p-2 w-50 rounded'>
+                {this.displayQuizResult(quiz, results)}
+              </div>
             </div>
           )}
         </div>
